@@ -11,19 +11,22 @@ import (
 	"os"
 )
 
-func copyText(texto string, object hash.Hash) {
-	f, err := os.Open(texto)
+// copyText opens a specific file (.txt) and copy to the object
+// text: string type, is the file name to open
+// object: hash.Hash type, is the object in wich will be copied the file contents
+func copyText(text string, object hash.Hash) {
+	f, err := os.Open(text)
 	if err != nil {
 		fmt.Println("Error al abrir el archivo")
 	} else {
-		io.Copy(object, f) // Copy the text content to md5 object
+		io.Copy(object, f) // Copy the text contents to object
 	}
 	f.Close()
 }
 
 func main() {
-	txtFlag := flag.String("file", "", "File name to encrypt")
-	strFlag := flag.String("str", "", "String to encrypt")
+	txtFlag := flag.String("file", "", "File name to encrypt its contents") // Define the file flag
+	strFlag := flag.String("str", "", "String to encrypt") // Defin the str flag
 	flag.Parse()
 
 	md5 := md5.New()
@@ -37,7 +40,7 @@ func main() {
 	} else if *strFlag != "" {
 		io.WriteString(md5, *strFlag)  // Copy the string to md5
 		io.WriteString(sha1, *strFlag) // Copy the string to sha1
-		sha256.Write([]byte(*strFlag)) // Copy the striing to sha256
+		sha256.Write([]byte(*strFlag)) // Copy the string to sha256
 	}
 
 	fmt.Printf("MD5: %x \n", md5.Sum(nil))      // Print md5
